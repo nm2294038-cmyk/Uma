@@ -1,0 +1,462 @@
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8"></meta>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"></meta>
+
+    <title> nanomon </title>
+
+    <!-- CSS Code Starts Here -->
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background-color: #f8f9fa;
+
+            color: #202124;
+
+            margin: 0;
+
+            padding: 25px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+        }
+
+        h1 {
+
+            color: #333;
+
+            margin-bottom: 20px;
+
+        }
+
+        .link-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+
+            gap: 20px;
+
+            width: 100%;
+
+            max-width: 1200px;
+
+            margin-bottom: 30px;
+
+        }
+
+        .link-container {
+
+            display: flex;
+
+            align-items: center;
+
+            background-color: #fff;
+
+            border: 2px solid #dfe1e5;
+
+            border-radius: 24px;
+
+            padding: 5px 15px;
+
+            transition: all 0.3s ease-in-out;
+
+        }
+
+        
+
+        .link-container.processing {
+
+            border-color: #1a73e8;
+
+            transform: scale(1.03);
+
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+
+        }
+
+        .link-container.completed {
+
+            opacity: 0.5;
+
+            background-color: #f1f3f4;
+
+            border-color: #d0d0d0;
+
+        }
+
+        .link-container.completed .link-input {
+
+            text-decoration: line-through;
+
+        }
+
+        .link-container span {
+
+            color: #9aa0a6;
+
+            margin-right: 10px;
+
+            font-weight: bold;
+
+        }
+
+        .link-input {
+
+            border: none;
+
+            outline: none;
+
+            width: 100%;
+
+            padding: 8px 0;
+
+            font-size: 14px;
+
+            background-color: transparent;
+
+            color: #5f6368;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+        .controls {
+
+            text-align: center;
+
+            background-color: #fff;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+            position: sticky;
+
+            bottom: 20px;
+
+            width: 90%;
+
+            max-width: 600px;
+
+            z-index: 10;
+
+        }
+
+        
+
+        #start-button {
+
+            background-color: #1a73e8;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            padding: 15px 30px;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+        
+
+        #start-button:disabled {
+
+            background-color: #a0a0a0;
+
+            cursor: not-allowed;
+
+        }
+
+        #status-area {
+
+            margin-top: 15px;
+
+            font-size: 16px;
+
+            color: #5f6368;
+
+            font-weight: bold;
+
+            min-height: 20px;
+
+        }
+
+        #timer {
+
+            color: #d93025;
+
+        }
+
+    </style>
+
+    <!-- CSS Code Ends Here -->
+
+</head>
+
+<body>
+
+    <h1>Small Window Link Opener</h1>
+
+    <p>"Start" button dabane par har link ek choti window (320px width) mein khulega.</p>
+
+    <div class="link-grid" id="link-grid"></div>
+
+    <div class="controls">
+
+        <button id="start-button">Start Opening All Links</button>
+
+        <div id="status-area">Ready.</div>
+
+    </div>
+
+    <!-- JavaScript Code Starts Here -->
+
+    <script>
+
+        // === YAHAN APKE SAARAY LINKS ADD KARDIYE GAYE HAIN ===
+
+        const links = [
+
+          "https://zunishch68.blogspot.com/2025/09/Dil%20Mein%20Dhadkan%20aur%20Raaz.html",
+
+"https://zunishch68.blogspot.com/2025/09/Spano%20ka%20safar%20love%20%20thriller.html",
+
+          "https://zunishch68.blogspot.com/2025/09/sheher-ka-raaz-thriller-story-part-3%20to%2010.html",
+
+            "https://zunishch68.blogspot.com/2025/09/sheher-ka-raaz-thriller.html",
+
+            "https://zunishch68.blogspot.com/2025/08/mohabbat-ka-safar-aik-suspense-aur.html",
+
+            "https://zunishch68.blogspot.com/2025/08/aakhri-khata-ek-dil-tod-dene-wali.html",
+
+            "https://zunishch68.blogspot.com/2025/08/chandni-raat-ka-raaz.html",
+
+            "https://zunishch68.blogspot.com/2025/08/dil-ka-khel-mohabbat-ya-maut.html",
+
+            "https://zunishch68.blogspot.com/2025/08/mohabbat-ya-saazish-ek-love-thriller.html",
+
+            "https://zunishch68.blogspot.com/2025/08/the-birth-of-new-world.html",
+
+            "https://zunishch68.blogspot.com/2025/08/ishq-aur-inteqam-love-revenge-thriller.html",
+
+            "https://zunishch68.blogspot.com/2025/08/two-horns.html",
+
+            "https://zunishch68.blogspot.com/2025/08/romance-and-betrayal-shadows-of-trust.html",
+
+            "https://zunishch68.blogspot.com/2025/08/gehra-sagar-dil-se-rooh-tak.html",
+
+            "https://zunishch68.blogspot.com/2025/08/khudai-se-hasi.html",
+
+            "https://zunishch68.blogspot.com/2025/08/ishq-aur-raaz.html",
+
+            "https://zunishch68.blogspot.com/2025/08/ishq-aur-khoon-ek-adhuri-kahani.html",
+
+            "https://zunishch68.blogspot.com/2025/08/aashiqon-ki-love-story-romance-emotions.html",
+
+            "https://zunishch68.blogspot.com/2025/08/dilchasp-love-aur-suspense-ek-aisa.html",
+
+            "https://zunishch68.blogspot.com/2025/08/pehli-mohabbat.html",
+
+            "https://zunishch68.blogspot.com/2025/08/pyaar-ki-dhadkan-suspense-ki-chaadar.html",
+
+            "https://zunishch68.blogspot.com/2025/08/khooni-train-dosto-ka-safar-jo-laut-kar.html",
+
+            "https://zunishch68.blogspot.com/2025/08/purani-kitaab-ka-raaz.html",
+
+            "https://zunishch68.blogspot.com/2025/08/adhoori-kahani-se-puri-mohabbat-tak.html",
+
+            "https://zunishch68.blogspot.com/2025/08/dil-se-dil-tak-heart-touching-love-story.html",
+
+            "https://zunishch68.blogspot.com/2025/08/rehasatmayi-haweli-ka-shraap-ek.html",
+
+            "https://zunishch68.blogspot.com/2025/08/veerpur-ka-safed-saya-rajasthan-ki.html",
+
+            "https://zunishch68.blogspot.com/2025/08/khaufnaak-dastan-haunted-house-mystery.html",
+
+            "https://zunishch68.blogspot.com/2025/08/sitaron-ke-neeche-sagar-ke-saath.html",
+
+            "https://zunishch68.blogspot.com/2025/08/falling-for-you-love-story-that-will.html",
+
+            "https://zunishch68.blogspot.com/2025/08/raaz-e-samundar-har-lehar-ek-kahani-har.html",
+
+
+          "https://zunishch68.blogspot.com/2025/09/dil-mein-mohabbat-saaye-mein-raaz.html",
+          
+          "https://zunishch68.blogspot.com/2025/09/mohabbat-aur-khauf-ek-adhuri-kahani-ka.html",
+
+        ];
+
+        // ===============================================
+
+        const linkGrid = document.getElementById('link-grid');
+
+        const startButton = document.getElementById('start-button');
+
+        const statusArea = document.getElementById('status-area');
+
+        
+
+        function createLinkBars() {
+
+            if (links.length === 0) {
+
+                linkGrid.innerHTML = '<p>List mein koi link nahi hai.</p>';
+
+                statusArea.textContent = 'Please add links to the list in the code.';
+
+                startButton.disabled = true;
+
+                return;
+
+            }
+
+            linkGrid.innerHTML = ''; 
+
+            links.forEach((link, index) => {
+
+                const linkBoxHTML = `
+
+                    <div class="link-container">
+
+                        <span>${index + 1}.</span>
+
+                        <input type="text" class="link-input" value="${link}" readonly>
+
+                    </div>
+
+                `;
+
+                linkGrid.innerHTML += linkBoxHTML;
+
+            });
+
+            
+
+            statusArea.textContent = `Ready to open ${links.length} links.`;
+
+        }
+
+        
+
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+
+        function startVisualCountdown(durationInSeconds) {
+
+            let timer = durationInSeconds;
+
+            const timerElement = document.getElementById('timer');
+
+            if(timerElement) timerElement.textContent = timer;
+
+            const intervalId = setInterval(() => {
+
+                timer--;
+
+                if(timerElement) timerElement.textContent = timer;
+
+                if (timer <= 0) clearInterval(intervalId);
+
+            }, 1000);
+
+        }
+
+        async function processTabs() {
+
+            startButton.disabled = true;
+
+            const linksToProcess = document.querySelectorAll('.link-container');
+
+            linksToProcess.forEach(container => container.classList.remove('completed', 'processing'));
+
+            
+
+            if (linksToProcess.length === 0) {
+
+                statusArea.textContent = 'Koi link box nahi mila.';
+
+                startButton.disabled = false;
+
+                return;
+
+            }
+
+            for (let i = 0; i < linksToProcess.length; i++) {
+
+                const container = linksToProcess[i];
+
+                const input = container.querySelector('.link-input');
+
+                const urlToOpen = input.value;
+
+                container.classList.add('processing');
+
+                statusArea.innerHTML = `Opening Link ${i + 1} of ${linksToProcess.length}...`;
+
+                
+
+                const windowFeatures = 'width=320,height=480,top=70,left=70,resizable=yes,scrollbars=yes';
+
+                window.open(urlToOpen, '_blank', windowFeatures);
+
+                
+
+                container.classList.remove('processing');
+
+                container.classList.add('completed');
+
+                
+
+                if (i < linksToProcess.length - 1) {
+
+                    statusArea.innerHTML = `Next link <span id="timer">${25}</span> seconds mein khulega...`;
+
+                    startVisualCountdown(30);
+
+                    await delay(3000); // 25 seconds ka wait
+
+                }
+
+            }
+
+            statusArea.textContent = `Process Complete! ${linksToProcess.length} links khul gaye hain.`;
+
+            startButton.disabled = false;
+
+        }
+
+        createLinkBars();
+
+        startButton.addEventListener('click', processTabs);
+
+    </script>
+
+    <!-- JavaScript Code Ends Here -->
+
+</body>
+
+</html>
