@@ -1,395 +1,87 @@
-<html lang="en">
-
+<!DOCTYPE html>
+<html>
 <head>
-
-    <meta charset="UTF-8"></meta>
-
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"></meta>
-
-    <title> nanomon </title>
-
-    <!-- CSS Code Starts Here -->
-
-    <style>
-
-        body {
-
-            font-family: Arial, sans-serif;
-
-            background-color: #f8f9fa;
-
-            color: #202124;
-
-            margin: 0;
-
-            padding: 25px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-        }
-
-        h1 {
-
-            color: #333;
-
-            margin-bottom: 20px;
-
-        }
-
-        .link-grid {
-
-            display: grid;
-
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-
-            gap: 20px;
-
-            width: 100%;
-
-            max-width: 1200px;
-
-            margin-bottom: 30px;
-
-        }
-
-        .link-container {
-
-            display: flex;
-
-            align-items: center;
-
-            background-color: #fff;
-
-            border: 2px solid #dfe1e5;
-
-            border-radius: 24px;
-
-            padding: 5px 15px;
-
-            transition: all 0.3s ease-in-out;
-
-        }
-
-        
-
-        .link-container.processing {
-
-            border-color: #1a73e8;
-
-            transform: scale(1.03);
-
-            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
-
-        }
-
-        .link-container.completed {
-
-            opacity: 0.5;
-
-            background-color: #f1f3f4;
-
-            border-color: #d0d0d0;
-
-        }
-
-        .link-container.completed .link-input {
-
-            text-decoration: line-through;
-
-        }
-
-        .link-container span {
-
-            color: #9aa0a6;
-
-            margin-right: 10px;
-
-            font-weight: bold;
-
-        }
-
-        .link-input {
-
-            border: none;
-
-            outline: none;
-
-            width: 100%;
-
-            padding: 8px 0;
-
-            font-size: 14px;
-
-            background-color: transparent;
-
-            color: #5f6368;
-
-            white-space: nowrap;
-
-            overflow: hidden;
-
-            text-overflow: ellipsis;
-
-        }
-
-        .controls {
-
-            text-align: center;
-
-            background-color: #fff;
-
-            padding: 20px;
-
-            border-radius: 12px;
-
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
-            position: sticky;
-
-            bottom: 20px;
-
-            width: 90%;
-
-            max-width: 600px;
-
-            z-index: 10;
-
-        }
-
-        
-
-        #start-button {
-
-            background-color: #1a73e8;
-
-            color: white;
-
-            border: none;
-
-            border-radius: 8px;
-
-            padding: 15px 30px;
-
-            font-size: 18px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-        }
-
-        
-
-        #start-button:disabled {
-
-            background-color: #a0a0a0;
-
-            cursor: not-allowed;
-
-        }
-
-        #status-area {
-
-            margin-top: 15px;
-
-            font-size: 16px;
-
-            color: #5f6368;
-
-            font-weight: bold;
-
-            min-height: 20px;
-
-        }
-
-        #timer {
-
-            color: #d93025;
-
-        }
-
-    </style>
-
-    <!-- CSS Code Ends Here -->
-
+  <meta charset="UTF-8">
+  <title>60 IFrames Loader jab tak all load nai ho jaty tab tak back nai jana app payment pit nai mily gi</title>
+  <style>
+    body {font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5;}
+    #container {display: flex; flex-wrap: wrap; gap: 10px;}
+    .iframe-item {width: 300px; height: 50px; border: 1px solid #ddd; background: white; display: flex; flex-direction: column;}
+    .iframe-header {display: flex; justify-content: space-between; align-items: center; padding: 5px; background-color: #eee; border-bottom: 1px solid #ddd;}
+    .iframe-number-label {font-size: 0.9em; font-weight: bold;}
+    .iframe-timer-label {font-size: 0.8em; color: #555;}
+    .actual-iframe {flex-grow: 1; border: none; width: 100%; height: 190%;}
+  </style>
 </head>
-
 <body>
-
-    <h1>Small Window Link Opener</h1>
-
-    <p>"Start" button dabane par hahttps://toolswebsite205.blogspot.com/2025/08/prabandhakah-dev-nazimaur-tejashree.html?m=1r link ek choti window (320px width) mein khulega.</p>
-
-    <div class="link-grid" id="link-grid"></div>
-
-    <div class="controls">
-
-        <button id="start-button">Start Opening All Links</button>
-
-        <div id="status-area">Ready.</div>
-
-    </div>
-
-    <!-- JavaScript Code Starts Here -->
-
-    <script>
-
-        // === YAHAN APKE SAARAY LINKS ADD KARDIYE GAYE HAIN ===
-
-        const links = ["https://toolswebsite205.blogspot.com/2025/08/prabandhakah-dev-nazimaur-tejashree.html?m=1"
-
-        ];
-
-        // ===============================================
-
-        const linkGrid = document.getElementById('link-grid');
-
-        const startButton = document.getElementById('start-button');
-
-        const statusArea = document.getElementById('status-area');
-
-        
-
-        function createLinkBars() {
-
-            if (links.length === 0) {
-
-                linkGrid.innerHTML = '<p>List mein koi link nahi hai.</p>';
-
-                statusArea.textContent = 'Please add links to the list in the code.';
-
-                startButton.disabled = true;
-
-                return;
-
-            }
-
-            linkGrid.innerHTML = ''; 
-
-            links.forEach((link, index) => {
-
-                const linkBoxHTML = `
-
-                    <div class="link-container">
-
-                        <span>${index + 1}.</span>
-
-                        <input type="text" class="link-input" value="${link}" readonly>
-
-                    </div>
-
-                `;
-
-                linkGrid.innerHTML += linkBoxHTML;
-
-            });
-
-            
-
-            statusArea.textContent = `Ready to open ${links.length} links.`;
-
-        }
-
-        
-
-        const delay = ms => new Promise(res => setTimeout(res, ms));
-
-        function startVisualCountdown(durationInSeconds) {
-
-            let timer = durationInSeconds;
-
-            const timerElement = document.getElementById('timer');
-
-            if(timerElement) timerElement.textContent = timer;
-
-            const intervalId = setInterval(() => {
-
-                timer--;
-
-                if(timerElement) timerElement.textContent = timer;
-
-                if (timer <= 0) clearInterval(intervalId);
-
-            }, 1000);
-
-        }
-
-        async function processTabs() {
-
-            startButton.disabled = true;
-
-            const linksToProcess = document.querySelectorAll('.link-container');
-
-            linksToProcess.forEach(container => container.classList.remove('completed', 'processing'));
-
-            
-
-            if (linksToProcess.length === 0) {
-
-                statusArea.textContent = 'Koi link box nahi mila.';
-
-                startButton.disabled = false;
-
-                return;
-
-            }
-
-            for (let i = 0; i < linksToProcess.length; i++) {
-
-                const container = linksToProcess[i];
-
-                const input = container.querySelector('.link-input');
-
-                const urlToOpen = input.value;
-
-                container.classList.add('processing');
-
-                statusArea.innerHTML = `Opening Link ${i + 1} of ${linksToProcess.length}...`;
-
-                
-
-                const windowFeatures = 'width=320,height=480,top=70,left=70,resizable=yes,scrollbars=yes';
-
-                window.open(urlToOpen, '_blank', windowFeatures);
-
-                
-
-                container.classList.remove('processing');
-
-                container.classList.add('completed');
-
-                
-
-                if (i < linksToProcess.length - 1) {
-
-                    statusArea.innerHTML = `Next link <span id="timer">${25}</span> seconds mein khulega...`;
-
-                    startVisualCountdown(30);
-
-                    await delay(3000); // 25 seconds ka wait
-
-                }
-
-            }
-
-            statusArea.textContent = `Process Complete! ${linksToProcess.length} links khul gaye hain.`;
-
-            startButton.disabled = false;
-
-        }
-
-        createLinkBars();
-
-        startButton.addEventListener('click', processTabs);
-
-    </script>
-
-    <!-- JavaScript Code Ends Here -->
-
+  <h2>50 IFrames Loader Jab Tak All Web Page Load Nai Hoty Tab Tak back Nai Ja Nai Tu App ko Payment Nai Mily Gi</h2>
+  <div id="container"></div>
+
+  <script>
+    const urls = [
+      "https://toolswebsite205.blogspot.com/2025/08/prabandhakah-dev-nazimaur-tejashree.html?m=1",
+      "https://toolswebsite205.blogspot.com/2025/08/prabandhakah-dev-nazimaur-tejashree.html?m=1",
+      "https://toolswebsite205.blogspot.com/2025/08/prabandhakah-dev-nazimaur-tejashree.html?m=1 " ,
+      "https://toolswebsite205.blogspot.com/2025/08/prabandhakah-dev-nazimaur-tejashree.html?m=1",
+      "https://toolswebsite205.blogspot.com/2025/08/prabandhakah-dev-nazimaur-tejashree.html?m=1",
+      "https://www.revenuecpmgate.com/nxh0xjhih?key=1c278cce641540317cc29f9223f421cf",
+      "https://toolswebsite205.blogspot.com/2025/08/prabandhakah-dev-nazimaur-tejashree.html?m=1 " ,
+      "https://toolswebsite205.blogspot.com/2025/08/prabandhakah-dev-nazimaur-tejashree.html?m=1",
+            "https://toolswebsite205.blogspot.com/2025/08/prabandhakah-dev-nazimaur-tejashree.html?m=1 " ,
+      "https://toolswebsite205.blogspot.com/2025/08/prabandhakah-dev-nazimaur-tejashree.html?m=1"
+      
+    ];
+
+    const TOTAL_IFRAMES = 50;
+    const RELOAD_INTERVAL_SECONDS = 45;
+    const container = document.getElementById("container");
+
+    function startIframe(url, index) {
+      const item = document.createElement("div");
+      item.className = "iframe-item";
+
+      const header = document.createElement("div");
+      header.className = "iframe-header";
+
+      const lbl = document.createElement("span");
+      lbl.className = "iframe-number-label";
+      lbl.textContent = `IFrame ${index+1}`;
+
+      const timerLbl = document.createElement("span");
+      timerLbl.className = "iframe-timer-label";
+      timerLbl.textContent = "اگلا ریفریش: --";
+
+      header.append(lbl, timerLbl);
+
+      const iframe = document.createElement("iframe");
+      iframe.className = "actual-iframe";
+      iframe.src = url + (url.includes("?") ? "&" : "?") + "rnd=" + Math.random();
+
+      item.append(header, iframe);
+      container.append(item);
+
+      let secondsLeft = RELOAD_INTERVAL_SECONDS;
+      function updateTimer() {
+        timerLbl.textContent = `اگلا ریفریش: ${secondsLeft} سیکنڈ`;
+        secondsLeft--;
+        if (secondsLeft < 0) secondsLeft = RELOAD_INTERVAL_SECONDS;
+      }
+      setInterval(updateTimer, 1000);
+
+      setInterval(() => {
+        iframe.src = url + (url.includes("?") ? "&" : "?") + "rnd=" + Math.random();
+        secondsLeft = RELOAD_INTERVAL_SECONDS;
+        updateTimer();
+      }, RELOAD_INTERVAL_SECONDS * 1000);
+
+      updateTimer();
+    }
+
+    // 100 iframes round-robin دونوں لنکس پر
+    for (let i = 0; i < TOTAL_IFRAMES; i++) {
+      const url = urls[i % urls.length];
+      startIframe(url, i);
+    }
+  </script>
 </body>
-
 </html>
